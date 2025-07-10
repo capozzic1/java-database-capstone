@@ -1,13 +1,18 @@
 package com.project.back_end.DTO;
 
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
+@Setter
 public class Login {
-    
+    private String email;
 // 1. 'email' field:
 //    - Type: private String
 //    - Description:
 //      - Represents the email address used for logging into the system.
 //      - The email field is expected to contain a valid email address for user authentication purposes.
-
+private String password;
 // 2. 'password' field:
 //    - Type: private String
 //    - Description:

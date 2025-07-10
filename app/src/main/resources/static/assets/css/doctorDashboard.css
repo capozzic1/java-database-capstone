@@ -1,6 +1,157 @@
 /* This is the style sheet for the doctorDashboard.html */
 /* 
 **Table Header (`.table-header`)**
+/* doctorDashboard.css */
+
+/* Reset & Base Styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  height: 100%;
+  font-family: Arial, sans-serif;
+  background-color: #f8f9fa;
+}
+
+/* Layout */
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  padding: 20px;
+}
+
+.main-content {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  margin-top: 20px;
+}
+
+/* Search and Filter Styling */
+.dashboard-controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+}
+
+#searchBar,
+#appointmentDatePicker,
+#todayAppointmentsBtn {
+  padding: 10px 12px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 1rem;
+}
+
+#searchBar,
+#appointmentDatePicker {
+  flex: 1;
+  min-width: 180px;
+}
+
+#todayAppointmentsBtn {
+  background-color: #015c5d;
+  color: white;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+#todayAppointmentsBtn:hover {
+  background-color: #017d7e;
+}
+
+/* Table Styling */
+.table-container {
+  overflow-x: auto;
+}
+
+#patientTable {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: white;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+#patientTable thead {
+  background-color: rgba(1, 92, 93, 0.9);
+  color: white;
+}
+
+#patientTable th,
+#patientTable td {
+  padding: 12px 15px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+}
+
+#patientTable tbody tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
+#patientTable tbody tr:hover {
+  background-color: #e1f7f7;
+}
+
+/* Extras */
+.prescription-btn {
+  padding: 6px 10px;
+  border: none;
+  background-color: #017d7e;
+  color: white;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: transform 0.2s ease, filter 0.2s ease;
+}
+
+.prescription-btn:hover {
+  transform: scale(1.05);
+  filter: brightness(1.1);
+}
+
+.noPatientRecord {
+  font-style: italic;
+  color: gray;
+  padding: 10px;
+  text-align: center;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .main-content {
+    gap: 15px;
+  }
+
+  #searchBar,
+  #appointmentDatePicker,
+  #todayAppointmentsBtn {
+    font-size: 0.9rem;
+    padding: 8px 10px;
+  }
+
+  #patientTable th,
+  #patientTable td {
+    font-size: 0.9rem;
+    padding: 10px 12px;
+  }
+}
+
+@media (max-width: 480px) {
+  .dashboard-controls {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  #searchBar,
+  #appointmentDatePicker,
+  #todayAppointmentsBtn {
+    width: 100%;
+  }
+}
 
 * Set font size to `24px` for clear emphasis.
 * Use a dark teal color (`#015c5d`) for consistency with the theme.

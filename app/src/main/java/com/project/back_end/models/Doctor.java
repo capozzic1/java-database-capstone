@@ -1,18 +1,38 @@
 package com.project.back_end.models;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+import java.util.List;
+
+@Entity
+@Getter
+@Setter
+@NoArgsConstructor
 public class Doctor {
 
-// @Entity annotation:
+    // @Entity annotation:
 //    - Marks the class as a JPA entity, meaning it represents a table in the database.
 //    - Required for persistence frameworks (e.g., Hibernate) to map the class to a database table.
-
-// 1. 'id' field:
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    // 1. 'id' field:
 //    - Type: private Long
 //    - Description:
 //      - Represents the unique identifier for each doctor.
 //      - The @Id annotation marks it as the primary key.
 //      - The @GeneratedValue(strategy = GenerationType.IDENTITY) annotation auto-generates the ID value when a new record is inserted into the database.
-
+    @NotNull
+    @Size(min = 3, max = 100)
+    private String name;
 // 2. 'name' field:
 //    - Type: private String
 //    - Description:
@@ -21,36 +41,47 @@ public class Doctor {
 //      - The @Size(min = 3, max = 100) annotation ensures that the name length is between 3 and 100 characters. 
 //      - Provides validation for correct input and user experience.
 
-
-// 3. 'specialty' field:
+    @NotNull
+    @Size(min = 3, max = 50)
+    private String specialty;
+    // 3. 'specialty' field:
 //    - Type: private String
 //    - Description:
 //      - Represents the medical specialty of the doctor.
 //      - The @NotNull annotation ensures that a specialty must be provided.
 //      - The @Size(min = 3, max = 50) annotation ensures that the specialty name is between 3 and 50 characters long.
+    @NotNull
+    @Email
+    private String email;
 
-// 4. 'email' field:
+    // 4. 'email' field:
 //    - Type: private String
 //    - Description:
 //      - Represents the doctor's email address.
 //      - The @NotNull annotation ensures that an email address is required.
 //      - The @Email annotation validates that the email address follows a valid email format (e.g., doctor@example.com).
-
-// 5. 'password' field:
+    @NotNull
+    @Size(min = 6)
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    private String password;
+    // 5. 'password' field:
 //    - Type: private String
 //    - Description:
 //      - Represents the doctor's password for login authentication.
 //      - The @NotNull annotation ensures that a password must be provided.
 //      - The @Size(min = 6) annotation ensures that the password must be at least 6 characters long.
 //      - The @JsonProperty(access = JsonProperty.Access.WRITE_ONLY) annotation ensures that the password is not serialized in the response (hidden from the frontend).
-
-// 6. 'phone' field:
+    @NotNull
+    @Pattern(regexp = "^[0-9]{10}$")
+    private String phone;
+    // 6. 'phone' field:
 //    - Type: private String
 //    - Description:
 //      - Represents the doctor's phone number.
 //      - The @NotNull annotation ensures that a phone number must be provided.
 //      - The @Pattern(regexp = "^[0-9]{10}$") annotation validates that the phone number must be exactly 10 digits long.
-
+    @ElementCollection
+    private List<String> availableTimes;
 // 7. 'availableTimes' field:
 //    - Type: private List<String>
 //    - Description:

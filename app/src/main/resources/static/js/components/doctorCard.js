@@ -1,7 +1,7 @@
 // doctorCard.js
 
 // Import the overlay function for booking appointments (e.g. modal)
-import { showBookingOverlay } from "/js/components/loggedPatient.js";
+import { showBookingOverlay } from "/js/loggedPatient.js";
 
 // Import the deleteDoctor API function to remove doctors (admin role)
 import { deleteDoctor } from "/js/services/doctorServices.js";

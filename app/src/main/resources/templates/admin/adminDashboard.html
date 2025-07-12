@@ -10,16 +10,16 @@
     <link rel="stylesheet" th:href="@{/assets/css/style.css}">
 
     <!-- Utility & Rendering Scripts -->
-    <script th:src="@{/js/render.js}" defer></script>
-    <script th:src="@{/js/util.js}" defer></script>
+    <script type="module" th:src="@{/js/render.js}" defer></script>
+    <script type="module" th:src="@{/js/util.js}" defer></script>
 
     <!-- Layout Components -->
     <script th:src="@{/js/components/header.js}" defer></script>
     <script th:src="@{/js/components/footer.js}" defer></script>
 
     <!-- Page-Specific Modules -->
-    <script type="module" th:src="@{/js/services/adminDashboard.js}" defer></script>
-    <script type="module" th:src="@{/js/components/doctorCard.js}" defer></script>
+    <script type="module" th:src="@{./js/adminDashboard.js}" defer></script>
+    <script type="module" th:src="@{./js/components/doctorCard.js}" defer></script>
 </head>
 <body>
 <div class="container">
@@ -34,17 +34,21 @@
 
             <!-- Filters -->
             <div class="filters">
-                <select id="sortByTime">
+                <select id="filterTime">
                     <option value="">Sort by time</option>
-                    <option value="asc">Earliest</option>
-                    <option value="desc">Latest</option>
+                    <option value="am">AM</option>
+                    <option value="pm">PM</option>
                 </select>
 
-                <select id="filterBySpecialty">
+                <select id="filterSpecialty">
                     <option value="">Filter by specialty</option>
-                    <option value="cardiology">Cardiology</option>
-                    <option value="dermatology">Dermatology</option>
-                    <option value="neurology">Neurology</option>
+                    <option value="Cardiologist">Cardiologist</option>
+                    <option value="Dermatologist">Dermatologist</option>
+                    <option value="Neurologist">Neurologist</option>
+                    <option value="Orthopedist">Orthopedist</option>
+                    <option value="Pediatrician">Pediatrician</option>
+
+
                     <!-- More options can be dynamically injected if needed -->
                 </select>
             </div>

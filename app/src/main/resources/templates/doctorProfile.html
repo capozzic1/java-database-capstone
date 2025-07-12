@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <title>Doctor Profile</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" />
+</head>
+<body>
+<div class="container mt-5">
+    <div class="row">
+        <!-- Left: Display Doctor Info -->
+        <div class="col-md-5">
+            <h2>Profile</h2>
+            <ul class="list-unstyled">
+                <li><strong>Id:</strong> <span id="doctor-id" th:text="${doctor.id}"></span></li>
+                <li><strong>Email:</strong> <span th:text="${doctor.email}"></span></li>
+                <li><strong>Phone:</strong> <span th:text="${doctor.phone}"></span></li>
+                <li><strong>Name:</strong> <span th:text="${doctor.name}"></span></li>
+                <li><strong>Specialty:</strong> <span th:text="${doctor.specialty}"></span></li>
+            </ul>
+            <h5>Available Times</h5>
+            <ul>
+                <li th:each="time : ${doctor.availableTimes}" th:text="${time}"></li>
+            </ul>
+        </div>
+
+        <!-- Right: Update Form -->
+        <div class="col-md-7">
+            <h2>Update Profile</h2>
+            <div  th:object="${doctor}">
+                <div class="mb-3">
+                    <label for="email" class="form-label">Email</label>
+                    <input type="email" id="email" th:field="*{email}" class="form-control" />
+                </div>
+
+                <div class="mb-3">
+                    <label for="phone" class="form-label">Phone</label>
+                    <input type="text" id="phone" th:field="*{phone}" class="form-control" />
+                </div>
+
+                <div class="mb-3">
+                    <label for="name" class="form-label">Name</label>
+                    <input type="text" id="name" th:field="*{name}" class="form-control" />
+                </div>
+
+                <div class="mb-3">
+                    <label for="specialty" class="form-label">Specialty</label>
+                    <input type="text" id="specialty" th:field="*{specialty}" class="form-control" />
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Available Times</label>
+                    <div class="mb-3">
+                        <label class="form-label">Available Times</label>
+
+                        <div class="form-check">
+                            <input class="form-check-input"
+                                   type="checkbox"
+                                   id="time0"
+                                   name="availableTimes"
+                                   value="08:00-09:00"
+                                   th:checked="${doctor.availableTimes.contains('08:00-09:00')}" />
+                            <label class="form-check-label" for="time0">8:00 AM – 9:00 AM</label>
+                        </div>
+
+                        <div class="form-check">
+                            <input class="form-check-input"
+                                   type="checkbox"
+                                   id="time1"
+                                   name="availableTimes"
+                                   value="09:00-10:00"
+                                   th:checked="${doctor.availableTimes.contains('09:00-10:00')}" />
+                            <label class="form-check-label" for="time1">9:00 AM – 10:00 AM</label>
+                        </div>
+
+                        <div class="form-check">
+                            <input class="form-check-input"
+                                   type="checkbox"
+                                   id="time2"
+                                   name="availableTimes"
+                                   value="10:00-11:00"
+                                   th:checked="${doctor.availableTimes.contains('10:00-11:00')}" />
+                            <label class="form-check-label" for="time2">10:00 AM – 11:00 AM</label>
+                        </div>
+
+                        <div class="form-check">
+                            <input class="form-check-input"
+                                   type="checkbox"
+                                   id="time3"
+                                   name="availableTimes"
+                                   value="11:00-12:00"
+                                   th:checked="${doctor.availableTimes.contains('11:00-12:00')}" />
+                            <label class="form-check-label" for="time3">11:00 AM – 12:00 PM</label>
+                        </div>
+
+                        <div class="form-check">
+                            <input class="form-check-input"
+                                   type="checkbox"
+                                   id="time4"
+                                   name="availableTimes"
+                                   value="12:00-13:00"
+                                   th:checked="${doctor.availableTimes.contains('12:00-13:00')}" />
+                            <label class="form-check-label" for="time4">12:00 PM – 1:00 PM</label>
+                        </div>
+
+                        <div class="form-check">
+                            <input class="form-check-input"
+                                   type="checkbox"
+                                   id="time5"
+                                   name="availableTimes"
+                                   value="13:00-14:00"
+                                   th:checked="${doctor.availableTimes.contains('13:00-14:00')}" />
+                            <label class="form-check-label" for="time5">1:00 PM – 2:00 PM</label>
+                        </div>
+
+                        <div class="form-check">
+                            <input class="form-check-input"
+                                   type="checkbox"
+                                   id="time6"
+                                   name="availableTimes"
+                                   value="14:00-15:00"
+                                   th:checked="${doctor.availableTimes.contains('14:00-15:00')}" />
+                            <label class="form-check-label" for="time6">2:00 PM – 3:00 PM</label>
+                        </div>
+
+                        <div class="form-check">
+                            <input class="form-check-input"
+                                   type="checkbox"
+                                   id="time7"
+                                   name="availableTimes"
+                                   value="15:00-16:00"
+                                   th:checked="${doctor.availableTimes.contains('15:00-16:00')}" />
+                            <label class="form-check-label" for="time7">3:00 PM – 4:00 PM</label>
+                        </div>
+
+                        <div class="form-check">
+                            <input class="form-check-input"
+                                   type="checkbox"
+                                   id="time8"
+                                   name="availableTimes"
+                                   value="16:00-17:00"
+                                   th:checked="${doctor.availableTimes.contains('16:00-17:00')}" />
+                            <label class="form-check-label" for="time8">4:00 PM – 5:00 PM</label>
+                        </div>
+                    </div>
+
+                </div>
+
+                <button id="profile-submit-btn" class="btn btn-primary">Update</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="module" th:src="@{/js/doctorProfile.js}" defer></script>
+
+</body>
+</html>

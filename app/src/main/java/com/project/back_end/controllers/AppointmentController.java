@@ -42,12 +42,12 @@ public class AppointmentController {
     @GetMapping("/{date}/{patientName}/{token}")
     public ResponseEntity<?> getAppointments(@PathVariable @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date, @PathVariable String patientName, @PathVariable String token) {
         try {
-            Map<String, String> tokenMap = utilityService.validateToken(token, "doctor");
+            Map<String, String> tokenMap = utilityService.getTokenValidationResponse(token);
             Map<String, String> resp = new HashMap<>();
             if (tokenMap.isEmpty()) {
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(resp);
             }
-            Map<String, Object> appt = appointmentService.getAppointment(date, token);
+            Map<String, Object> appt = appointmentService.getAppointment(date, patientName, token);
             return ResponseEntity.ok(appt);
         } catch (DateTimeParseException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Please provide a valid date");
@@ -62,7 +62,7 @@ public class AppointmentController {
 //    - Returns success if booked, or appropriate error messages if the doctor ID is invalid or the slot is already taken.
     @PostMapping("/{token}")
     public ResponseEntity<?> bookAppointment(@RequestBody Appointment appt, @PathVariable String token) {
-        Map<String, String> tokenMap = utilityService.validateToken(token, "patient");
+        Map<String, String> tokenMap = utilityService.getTokenValidationResponse(token);
         if (!tokenMap.isEmpty() && utilityService.validateAppointment(appt) == 1) {
                int result = appointmentService.bookAppointment(appt);
                if (result == 1) {
@@ -84,7 +84,7 @@ public class AppointmentController {
 //    - Returns an appropriate success or failure response based on the update result.
     @PutMapping("/{token}")
     public ResponseEntity<?> updateAppointment(@RequestBody Appointment appt, @PathVariable String token) {
-        Map<String, String> tokenMap = utilityService.validateToken(token, "patient");
+        Map<String, String> tokenMap = utilityService.getTokenValidationResponse(token);
         if (!tokenMap.isEmpty()) {
            return appointmentService.updateAppointment(appt);
         } else {
@@ -99,7 +99,7 @@ public class AppointmentController {
 //    - Calls `AppointmentService` to handle the cancellation process and returns the result.
     @DeleteMapping("/{id}/{token}")
     public ResponseEntity<?> cancelAppointment(@PathVariable Long id, @PathVariable String token) {
-        Map<String, String> tokenMap = utilityService.validateToken(token, "patient");
+        Map<String, String> tokenMap = utilityService.getTokenValidationResponse(token);
         if (!tokenMap.isEmpty()) {
             return appointmentService.cancelAppointment(id);
         } else {

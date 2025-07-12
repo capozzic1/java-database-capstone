@@ -1,5 +1,6 @@
 package com.project.back_end.controllers;
 
+import com.project.back_end.DTO.DoctorDTO;
 import com.project.back_end.DTO.Login;
 import com.project.back_end.models.Doctor;
 import com.project.back_end.services.DoctorService;
@@ -11,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -39,7 +41,7 @@ public class DoctorController {
 //    - If the token is invalid, returns an error response; otherwise, returns the availability status for the doctor.
     @GetMapping("/availability/{user}/{doctorId}/{date}/{token}")
     public ResponseEntity<?> getDoctorAvailability(@PathVariable String user, @PathVariable Long doctorId, @PathVariable @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date, @PathVariable String token) {
-        Map<String, String> tokenMap = utilityService.validateToken(token, user);
+        Map<String, String> tokenMap = utilityService.getTokenValidationResponse(token);
         if (!tokenMap.isEmpty()) {
             List<String> avail = doctorService.getDoctorAvailability(doctorId, date);
             return ResponseEntity.ok(avail);
@@ -61,22 +63,28 @@ public class DoctorController {
 //    - Accepts a validated `Doctor` object in the request body and a token for authorization.
 //    - Validates the token for the `"admin"` role before proceeding.
 //    - If the doctor already exists, returns a conflict response; otherwise, adds the doctor and returns a success message.
-    @PostMapping("/{token}")
+    @PostMapping("/save/{token}")
     public ResponseEntity<?> saveDoctor(@RequestBody Doctor doctor,@PathVariable String token) {
-        Map<String, String> tokenMap = utilityService.validateToken(token, "doctor");
+        Map<String, String> resp = new HashMap<>();
+        Map<String, String> tokenMap = utilityService.getTokenValidationResponse(token);
         if (!tokenMap.isEmpty()) {
              Map<String, Object> doc = doctorService.findDoctorByName(doctor.getName());
              if (!doc.isEmpty()) {
-                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("doc already exists");
+                 resp.put("message", "doc already exists");
+                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(resp);
              }
             int result = doctorService.saveDoctor(doctor);
              if (result == 1) {
-                 return ResponseEntity.ok("doctor has been saved");
+                 resp.put("message","doctor has been saved");
+                 return ResponseEntity.ok(resp);
              }
         } else {
+            resp.put("message","no token");
+
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("no token");
 
         }
+        resp.put("message","bad request");
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("bad request");
     }
 
@@ -95,10 +103,10 @@ public class DoctorController {
 //    - Token must belong to an `"admin"`.
 //    - If the doctor exists, updates the record and returns success; otherwise, returns not found or error messages.
     @PutMapping("/{token}")
-    public ResponseEntity<?> updateDoctor(@RequestBody Doctor doctor, @PathVariable String token) {
-        Map<String, String> tokenMap = utilityService.validateToken(token, "admin");
+    public ResponseEntity<?> updateDoctor(@RequestBody DoctorDTO dto, @PathVariable String token) {
+        Map<String, String> tokenMap = utilityService.getTokenValidationResponse(token);
         if (!tokenMap.isEmpty()) {
-            int result = doctorService.updateDoctor(doctor);
+            int result = doctorService.updateDoctor(dto);
             if (result == 1) {
                 return ResponseEntity.ok("doctor has been updated");
             } else if (result == -1) {
@@ -113,15 +121,18 @@ public class DoctorController {
 //    - Handles HTTP DELETE requests to remove a doctor by ID.
 //    - Requires both doctor ID and an admin token as path variables.
 //    - If the doctor exists, deletes the record and returns a success message; otherwise, responds with a not found or error message.
-    @DeleteMapping("/{id}/{token}")
+    @DeleteMapping("/delete/{id}/{token}")
     public ResponseEntity<?> deleteDoctor(@PathVariable Long id, @PathVariable String token) {
-        Map<String, String> tokenMap = utilityService.validateToken(token, "admin");
+        Map<String, String> resp = new HashMap<>();
+        Map<String, String> tokenMap = utilityService.getTokenValidationResponse(token);
         if (!tokenMap.isEmpty()) {
             int result = doctorService.deleteDoctor(id);
             if (result == 1) {
-                return ResponseEntity.ok("doctor deleted successfully");
+                resp.put("message", "doctor deleted successfully");
+                return ResponseEntity.ok(resp);
             } else if (result == -1) {
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("doctor not found");
+                resp.put("message", "doctor not found");
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(resp);
             }
         }
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("invalid token");

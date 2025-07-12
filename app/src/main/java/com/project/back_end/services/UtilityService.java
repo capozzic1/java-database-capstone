@@ -51,10 +51,10 @@ public class UtilityService {
 // This method checks if the provided JWT token is valid for a specific user. It uses the TokenService to perform the validation.
 // If the token is invalid or expired, it returns a 401 Unauthorized response with an appropriate error message. This ensures security by preventing
 // unauthorized access to protected resources.
-    public Map<String, String> validateToken(String token, String user) {
+    public Map<String, String> getTokenValidationResponse(String token) {
         Map<String, String> resp = new HashMap<>();
 
-        if (tokenService.validateToken(token, user)) {
+        if (tokenService.authenticateUserFromToken(token)) {
             resp.put("token", "valid token");
             return resp;
         }
@@ -78,7 +78,7 @@ public class UtilityService {
 
         if (admin != null) {
             if (admin.getPassword().equals(pw)) {
-                String token = tokenService.generateToken(user);
+                String token = tokenService.generateToken(user,"admin");
                 resp.put("token", token);
                 return ResponseEntity.ok(resp);
             } else {
@@ -177,7 +177,7 @@ public class UtilityService {
         Patient pat = patientRepository.findByEmail(login.getEmail());
         if (pat != null) {
             if (pat.getPassword().equals(login.getPassword())) {
-                String token = tokenService.generateToken(login.getEmail());
+                String token = tokenService.generateToken(login.getEmail(), "patient");
                 resp.put("token", token);
                 return ResponseEntity.ok(resp);
             } else {

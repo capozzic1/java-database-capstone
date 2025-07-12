@@ -36,7 +36,7 @@ public class PatientController {
     @GetMapping()
     public ResponseEntity<?> getPatient(@RequestHeader("Authorization") String authHeader) {
         String token = authHeader.replace("Bearer ", "");
-        Map<String, String> tm = utilityService.validateToken(token, "patient");
+        Map<String, String> tm = utilityService.getTokenValidationResponse(token);
 
         if (!tm.isEmpty()) {
             return patientService.getPatientDetails(token);
@@ -86,7 +86,7 @@ public class PatientController {
     public ResponseEntity<?> getPatientAppointment(@PathVariable Long id, @RequestHeader("Authorization") String authHeader) {
         String token = authHeader.replace("Bearer ", "");
 
-        Map<String, String> tm = utilityService.validateToken(token, "patient");
+        Map<String, String> tm = utilityService.getTokenValidationResponse(token);
         if (!tm.isEmpty()) {
             return patientService.getPatientAppointment(id, token);
         }
@@ -109,7 +109,7 @@ public class PatientController {
                                                       @PathVariable String name,
                                                       @PathVariable String token) {
 
-        Map<String, String> tokenMap = utilityService.validateToken(token, "patient");
+        Map<String, String> tokenMap = utilityService.getTokenValidationResponse(token);
         if (tokenMap.isEmpty()) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
                     .body("Invalid or missing token");

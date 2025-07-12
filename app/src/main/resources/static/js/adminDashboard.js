@@ -11,16 +11,12 @@ import {
 // DOM references
 const contentDiv = document.getElementById("content");
 const searchBar = document.getElementById("searchBar");
-const sortByTime = document.getElementById("sortByTime");
-const filterBySpecialty = document.getElementById("filterBySpecialty");
+const sortByTime = document.getElementById("filterTime");
+const filterBySpecialty = document.getElementById("filterSpecialty");
 const addDoctorBtn = document.getElementById("addDocBtn");
 
 // === Attach Add Doctor Button Listener ===
-if (addDoctorBtn) {
-  addDoctorBtn.addEventListener("click", () => {
-    openModal("addDoctor");
-  });
-}
+
 
 // === DOM Load Initialization ===
 window.addEventListener("DOMContentLoaded", () => {
@@ -35,6 +31,17 @@ window.addEventListener("DOMContentLoaded", () => {
   if (filterBySpecialty) {
     filterBySpecialty.addEventListener("change", filterDoctorsOnChange);
   }
+
+//  if (addDoctorBtn) {
+//    addDoctorBtn.addEventListener("click", () => {
+//      openModal("addDoctor");
+//    });
+//  }
+document.addEventListener("click", (e) => {
+  if (e.target && e.target.id === "addDocBtn") {
+    openModal("addDoctor");
+  }
+});
 });
 
 // === Load All Doctor Cards ===
@@ -69,11 +76,13 @@ async function filterDoctorsOnChange() {
 
 // === Render Helper Function ===
 function renderDoctorCards(doctors) {
+if (contentDiv) {
   contentDiv.innerHTML = ""; // clear area
   doctors.forEach(doctor => {
     const card = createDoctorCard(doctor);
     contentDiv.appendChild(card);
   });
+  }
 }
 
 // === Add New Doctor from Modal ===
@@ -84,11 +93,12 @@ export async function adminAddDoctor() {
     const email = document.getElementById("doctorEmail").value.trim();
     const phone = document.getElementById("doctorPhone").value.trim();
     const password = document.getElementById("doctorPassword").value.trim();
-    const specialty = document.getElementById("doctorSpecialty").value.trim();
-    const availableTimes = document.getElementById("doctorTimes").value
-      .split(",")
-      .map(t => t.trim())
-      .filter(Boolean);
+    const specialty = document.getElementById("specialization").value.trim();
+    const checkedTimes = Array.from(document.querySelectorAll('input[name="availability"]:checked'))
+                           .map(checkbox => checkbox.value);
+
+ console.log(checkedTimes); // ["09:00-10:00", "10:00-11:00", ...]
+
 
     // Validate token
     const token = localStorage.getItem("token");
@@ -104,7 +114,7 @@ export async function adminAddDoctor() {
       phone,
       password,
       specialty,
-      availableTimes
+      checkedTimes
     };
 
     // Save doctor

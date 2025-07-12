@@ -1,5 +1,6 @@
 package com.project.back_end.services;
 
+import com.project.back_end.DTO.AppointmentDTO;
 import com.project.back_end.models.Appointment;
 import com.project.back_end.models.Doctor;
 import com.project.back_end.repo.AppointmentRepository;
@@ -115,40 +116,70 @@ public class AppointmentService {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
         }
     }
-// 7. **Get Appointments Method**:
+
+    // 7. **Get Appointments Method**:
 //    - This method retrieves a list of appointments for a specific doctor on a particular day, optionally filtered by the patient's name.
 //    - It uses `@Transactional` to ensure that database operations are consistent and handled in a single transaction.
 //    - Instruction: Ensure the correct use of transaction boundaries, especially when querying the database for appointments.
     //todo double check this method.
-@Transactional
-public Map<String, Object> getAppointment(LocalDate date, String token) {
-    Map<String, Object> response = new HashMap<>();
-    String email = tokenService.extractEmail(token);
-    Doctor doc = doctorRepository.findByEmail(email);
-    // Step 1: Validate input
-    if (doc.getId() == null || date == null) {
-        response.put("message", "Doctor ID and date are required.");
+    @Transactional
+    public Map<String, Object> getAppointment(
+            LocalDate date,
+            String patientName,    // ← new parameter
+            String token
+    ) {
+        Map<String, Object> response = new HashMap<>();
+        String email = tokenService.extractEmail(token);
+        Doctor doc = doctorRepository.findByEmail(email);
+
+        // Step 1: Validate input
+        if (doc == null || doc.getId() == null || date == null) {
+            response.put("message", "Doctor ID and date are required.");
+            return response;
+        }
+
+        // Step 2: Create time range for the specified date
+        LocalDateTime start = date.atStartOfDay();       // e.g. 2025-07-11T00:00:00
+        LocalDateTime end = date.atTime(23, 59, 59);   // e.g. 2025-07-11T23:59:59
+
+        // Normalize the patientName filter: if null or blank, use empty string
+        String nameFilter = (patientName != null && !patientName.isBlank())
+                ? patientName
+                : "";
+
+        try {
+            List<Appointment> appointments;
+            // Step 3: Query with name filter and date range
+            //if name is empty
+            //findby doctorid and appointmenttime between
+            //else
+            if (nameFilter.isEmpty() || nameFilter.equals("null")) {
+                appointments = appointmentRepository.findByDoctorIdAndAppointmentTimeBetween(doc.getId(),start,end);
+            } else {
+                appointments = appointmentRepository
+                        .findByDoctorIdAndPatient_NameContainingIgnoreCaseAndAppointmentTimeBetween(
+                                doc.getId(),
+                                nameFilter,
+                                start,
+                                end
+                        );
+            }
+
+            List<AppointmentDTO> dtos = appointments
+                    .stream()
+                    .map(AppointmentDTO::new)
+                    .toList();
+            // Step 4: Prepare the response
+            response.put("message", "Appointments retrieved successfully.");
+            response.put("appointments", dtos);
+
+        } catch (Exception e) {
+            response.put("message", "Error retrieving appointments: " + e.getMessage());
+        }
+
         return response;
     }
 
-    // Step 2: Create time range for the specified date
-    LocalDateTime start = date.atStartOfDay();              // 00:00:00
-    LocalDateTime end = date.atTime(23, 59, 59);            // 23:59:59
-
-    try {
-        // Step 3: Query appointments for that doctor and date
-        List<Appointment> appointments = appointmentRepository
-                .findByDoctorIdAndAppointmentTimeBetween(doc.getId(), start, end);
-
-        // Step 4: Prepare the response
-        response.put("message", "Appointments retrieved successfully.");
-        response.put("appointments", appointments);
-    } catch (Exception e) {
-        response.put("message", "Error retrieving appointments: " + e.getMessage());
-    }
-
-    return response;
-}
 
 // 8. **Change Status Method**:
 //    - This method updates the status of an appointment by changing its value in the database.

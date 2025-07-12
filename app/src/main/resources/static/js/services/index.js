@@ -66,8 +66,8 @@ window.adminLoginHandler = async function () {
 window.doctorLoginHandler = async function () {
   try {
     // Step 1: Get credentials
-    const email = document.getElementById("doctorEmail").value;
-    const password = document.getElementById("doctorPassword").value;
+    const email = document.getElementById("email").value;
+    const password = document.getElementById("password").value;
 
     // Step 2: Create doctor object
     const doctor = { email, password };
@@ -82,6 +82,8 @@ window.doctorLoginHandler = async function () {
     // Step 4: If success
     if (res.ok) {
       const data = await res.json();
+      document.cookie = `token=${data.token}; path=/; secure; SameSite=Lax; max-age=3600`;
+
       localStorage.setItem("token", data.token);
       selectRole("doctor");
     } else {

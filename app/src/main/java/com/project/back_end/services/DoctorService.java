@@ -6,6 +6,7 @@ import com.project.back_end.models.Appointment;
 import com.project.back_end.models.Doctor;
 import com.project.back_end.repo.AppointmentRepository;
 import com.project.back_end.repo.DoctorRepository;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -105,23 +106,22 @@ public class DoctorService {
     // 6. **updateDoctor Method**:
 //    - Updates an existing doctor's details in the database. If the doctor doesn't exist, it returns `-1`.
 //    - Instruction: Make sure that the doctor exists before attempting to save the updated record and handle any errors properly.
-    @Transactional
-    public int updateDoctor(Doctor doctor) {
 
-        Optional<Doctor> doc = doctorRepository.findById(doctor.getId());
-        try {
-            if (doc.isPresent()) {
-                doctorRepository.save(doctor);
-                return 1;
-            } else {
-                System.out.println("No doctor found");
-                return -1;
-            }
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-            return 0;
-        }
+    @Transactional
+    public int updateDoctor(DoctorDTO dto) {
+        return doctorRepository.findById(dto.getId())
+                .map(entity -> {
+                    // only overwrite the things that came in
+                    entity.setName(dto.getName());
+                    entity.setSpecialty(dto.getSpecialty());
+                    entity.setPhone(dto.getPhone());
+                    entity.setAvailableTimes(dto.getAvailableTimes());
+                    // JPA will auto-flush at commit
+                    return 1;
+                })
+                .orElse(-1);
     }
+
 
     // 7. **getDoctors Method**:
 //    - Fetches all doctors from the database. It is marked with `@Transactional` to ensure that the collection is properly loaded.
@@ -160,8 +160,9 @@ public class DoctorService {
             return -1;
         }
         try {
-            doctorRepository.deleteById(id);
             appointmentRepository.deleteAllByDoctorId(id);
+            doctorRepository.deleteById(id);
+
             return 1;
         } catch (Exception e) {
             return 0;
@@ -186,7 +187,7 @@ public class DoctorService {
                 return ResponseEntity.status(HttpStatus.FORBIDDEN).body(resp);
             }
             if (doc.getPassword().equals(login.getPassword())) {
-                String token = tokenService.generateToken(login.getEmail());
+                String token = tokenService.generateToken(login.getEmail(), "doctor");
                 resp.put("token", token);
                 return ResponseEntity.ok(resp);
             }
@@ -207,13 +208,24 @@ public class DoctorService {
     public Map<String, Object> findDoctorByName(String name) {
         Map<String, Object> resp = new HashMap<>();
         List<Doctor> docs = doctorRepository.findByNameLike(name);
-        List<DoctorDTO> dtos = docs.stream()
-                .map(obj -> mapToDoctorDTO(obj))
-                .toList();
-        resp.put("List of doctors", dtos);
+        if (!docs.isEmpty()) {
+            List<DoctorDTO> dtos = docs.stream()
+                    .map(obj -> mapToDoctorDTO(obj))
+                    .toList();
+                    resp.put("List of doctors", dtos);
+
+        }
         return resp;
     }
 
+    @Transactional
+    public DoctorDTO findByEmail(String email) {
+        Doctor doc = doctorRepository.findByEmail(email);
+        if (doc == null) {
+            throw new EntityNotFoundException("No doctor found for " + email);
+        }
+        return mapToDoctorDTO(doc);
+    }
     // 11. **filterDoctorsByNameSpecilityandTime Method**:
 //    - Filters doctors based on their name, specialty, and availability during a specific time (AM/PM).
 //    - The method fetches doctors matching the name and specialty criteria, then filters them based on their availability during the specified time period.

@@ -1,4 +1,5 @@
 // modals.js
+import { adminAddDoctor} from '../adminDashboard.js';
 export function openModal(type) {
   let modalContent = '';
   if (type === 'addDoctor') {

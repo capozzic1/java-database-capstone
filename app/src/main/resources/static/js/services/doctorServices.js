@@ -1,10 +1,10 @@
 // doctorServices.js
 
 // Import the base API URL from the config file
-import { BASE_API } from "/js/config.js";
+import { API_BASE_URL } from "../config/config.js";
 
 // Define the full endpoint for doctor-related actions
-const DOCTOR_API = `${BASE_API}/doctor`;
+const DOCTOR_API = `${API_BASE_URL}/doctor`;
 
 // === Function: getDoctors ===
 // Purpose: Fetch the list of all doctors
@@ -12,7 +12,7 @@ export async function getDoctors() {
   try {
     const res = await fetch(`${DOCTOR_API}`);
     const data = await res.json();
-    return data.doctors || [];
+    return data || [];
   } catch (error) {
     console.error("Failed to fetch doctors:", error);
     return [];

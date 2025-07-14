@@ -129,5 +129,5 @@ dmypy.json
 .pyre/
 
 # ignore real config
-src/main/resources/application.properties
+app/src/main/resources/application.properties
 src/main/resources/application.yml

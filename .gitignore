@@ -127,3 +127,7 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+# ignore real config
+src/main/resources/application.properties
+src/main/resources/application.yml

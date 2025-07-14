@@ -95,5 +95,3 @@
 * Option to reschedule or cancel may be handled in a separate user story.
 
 ---
-
-Let me know if you'd like two additional stories for **logout** and **appointment cancellation/rescheduling**.

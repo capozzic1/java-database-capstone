@@ -15,10 +15,6 @@
 **Story Points:** 2
 **Notes:**
 
-* Support for "Forgot Password" should be available.
-* Consider using 2FA for added security.
-
----
 
 ### **User Story 2**
 
@@ -35,7 +31,6 @@
 **Story Points:** 5
 **Notes:**
 
-* Integration with Google Calendar or similar tools could be considered later.
 
 ---
 

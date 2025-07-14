@@ -56,8 +56,14 @@ export async function patientLogin(data) {
  * @returns {Object|null} - Patient object or null if failed
  */
 export async function getPatientData(token) {
+
   try {
-    const response = await fetch(`${PATIENT_API}/${token}`);
+    const response = await fetch(`${PATIENT_API}`, {
+    headers: {
+        'Authorization': `Bearer ${token}`,
+
+    }
+    });
     const data = await response.json();
     return response.ok ? data.patient : null;
   } catch (error) {
@@ -76,7 +82,10 @@ export async function getPatientData(token) {
  */
 export async function getPatientAppointments(id, token, user) {
   try {
-    const response = await fetch(`${PATIENT_API}/${id}/${user}/${token}`);
+    const response = await fetch(`${PATIENT_API}/${id}`,{
+    headers: {
+    "Authorization": `Bearer ${token}`
+    }});
     const data = await response.json();
     return response.ok ? data.appointments : null;
   } catch (error) {

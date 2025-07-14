@@ -12,6 +12,15 @@ document.addEventListener("DOMContentLoaded", () => {
   bindFilterListeners();
 });
 
+document.addEventListener("click", (e) => {
+  if (e.target && e.target.id === "patientSignup") {
+    openModal("patientSignup");
+  }
+    if (e.target && e.target.id === "patientLogin") {
+      openModal("patientLogin");
+    }
+
+});
 // Load all doctors and render them
 async function loadDoctorCards() {
   try {
@@ -85,6 +94,9 @@ window.signupPatient = async function () {
       alert(message);
       document.getElementById("modal").style.display = "none";
       window.location.reload();
+      setTimeout(() => {
+      window.location.href = '/pages/loggedPatientDashboard.html';
+      },1000);
     } else {
       alert(message);
     }
@@ -105,7 +117,9 @@ window.loginPatient = async function () {
     if (response.ok) {
       const result = await response.json();
       localStorage.setItem('token', result.token);
+      localStorage.setItem('userRole','loggedPatient');
       window.location.href = '/pages/loggedPatientDashboard.html';
+      window.location.reload();
     } else {
       alert('❌ Invalid credentials!');
     }

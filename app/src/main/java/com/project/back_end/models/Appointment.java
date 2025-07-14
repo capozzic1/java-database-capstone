@@ -69,7 +69,7 @@ public class Appointment {
 //        - 1 means the appointment has been completed.
 //      - The @NotNull annotation ensures that the status field is not null.
     @Transient
-    private LocalDateTime getEndTime() {
+    public LocalDateTime getEndTime() {
         return appointmentTime.plusHours(1);
     }
 

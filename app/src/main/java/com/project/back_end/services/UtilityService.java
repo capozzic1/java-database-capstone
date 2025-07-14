@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.List;
@@ -137,12 +138,15 @@ public class UtilityService {
         // Step 2: Get appointment date and time (formatted as "HH:mm")
         LocalDate date = appointment.getAppointmentDate();
         String appointmentTimeStr = appointment.getAppointmentTimeOnly().format(DateTimeFormatter.ofPattern("HH:mm"));
+        LocalTime endTime = appointment.getAppointmentTimeOnly().plusHours(1);
+        String endTimeStr = endTime.format(DateTimeFormatter.ofPattern("HH:mm"));
+        String range = appointmentTimeStr + "-" + endTimeStr;
 
         // Step 3: Fetch available time slots for the doctor on that date
         List<String> availableSlots = doctorService.getDoctorAvailability(doctorId, date);
 
         // Step 4: Check if the desired time is in the available slots
-        if (availableSlots.contains(appointmentTimeStr)) {
+        if (availableSlots.contains(range)) {
             return 1; // Valid time
         } else {
             return 0; // Time unavailable
@@ -210,11 +214,11 @@ public class UtilityService {
         Long patientId = pat.getId();
 
         // Step 3: Delegate filtering logic based on inputs
-        if (condition != null && name != null) {
+        if (!condition.equals("null") && !name.equals("null")) {
             return patientService.filterByDoctorAndCondition(condition, name, patientId);
-        } else if (condition != null) {
+        } else if (!condition.equals("null")) {
             return patientService.filterByCondition(condition, patientId);
-        } else if (name != null) {
+        } else if (!name.equals("null")) {
             return patientService.filterByDoctor(name, patientId);
         } else {
             return patientService.getPatientAppointment(patientId, token);

@@ -36,8 +36,8 @@ document.addEventListener('DOMContentLoaded', async () => {
       console.log("getPrescription :: ", response);
 
       // Now, check if the prescription exists in the response and access it from the array
-      if (response.prescription && response.prescription.length > 0) {
-        const existingPrescription = response.prescription[0]; // Access first prescription object
+      if (response.pDtos && response.pDtos.length > 0) {
+        const existingPrescription = response.pDtos[0]; // Access first prescription object
         patientNameInput.value = existingPrescription.patientName || YOU;
         medicinesInput.value = existingPrescription.medication || "";
         dosageInput.value = existingPrescription.dosage || "";

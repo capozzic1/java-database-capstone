@@ -12,6 +12,7 @@ const DOCTOR_API = `${API_BASE_URL}/doctor/login`;
 window.onload = () => {
   const adminLoginBtn = document.getElementById("adminLogin");
   const doctorLoginBtn = document.getElementById("doctorLogin");
+  const patientBtn = document.getElementById("patientBtn");
 
   // Admin login button logic
   if (adminLoginBtn) {
@@ -26,6 +27,12 @@ window.onload = () => {
       openModal("doctorLogin");
     });
   }
+
+//    if (patientBtn) {
+//      patientBtn.addEventListener("click", () => {
+//        window.location.href = '/pages/patientDashboard.html';
+//      });
+//    }
 };
 
 // === ADMIN LOGIN HANDLER ===

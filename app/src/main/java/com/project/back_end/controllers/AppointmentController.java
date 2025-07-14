@@ -63,15 +63,19 @@ public class AppointmentController {
     @PostMapping("/{token}")
     public ResponseEntity<?> bookAppointment(@RequestBody Appointment appt, @PathVariable String token) {
         Map<String, String> tokenMap = utilityService.getTokenValidationResponse(token);
+        Map<String, String> resp = new HashMap<>();
         if (!tokenMap.isEmpty() && utilityService.validateAppointment(appt) == 1) {
                int result = appointmentService.bookAppointment(appt);
                if (result == 1) {
-                   return ResponseEntity.ok("The appointment has been booked.");
+                   resp.put("message", "The appointment has been booked.");
+                   return ResponseEntity.ok(resp);
                } else {
-                   return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("There was an issue saving the appointment");
+                   resp.put("error", "There was an issue saving the appointment");
+                   return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(resp);
                }
         } else {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("There was an issue saving the appointment");
+            resp.put("error", "There was an issue saving the appointment");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(resp);
 
         }
     }

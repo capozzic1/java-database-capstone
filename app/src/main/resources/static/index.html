@@ -9,7 +9,7 @@
 
     <!-- Utility Scripts -->
     <script src="./js/util.js" defer></script>
-    <script src="./js/render.js" defer></script>
+    <script type="module" src="./js/render.js" defer></script>
 
     <!-- Component Scripts -->
     <script src="./js/components/header.js" defer></script>
@@ -27,8 +27,8 @@
             <!-- Main Content -->
             <main class="main-content">
                 <h2>Select Your Role</h2>
-                <button id="adminLogin" onclick="selectRole('admin')">Admin</button>
-                <button id="doctorLogin" onclick="selectRole('doctor')">Doctor</button>
+                <button id="adminLogin" >Admin</button>
+                <button id="doctorLogin" >Doctor</button>
                 <button id="patientBtn" onclick="selectRole('patient')">Patient</button>
             </main>
 

@@ -16,7 +16,7 @@ export function createPatientRow(patient, appointmentId, doctorId) {
   });
 
   tr.querySelector(".prescription-btn").addEventListener("click", () => {
-    window.location.href = `/pages/addPrescription.html?appointmentId=${appointmentId}&patientName=${patient.name}`;
+    window.location.href = `/pages/addPrescription.html?appointmentId=${appointmentId.id}&patientName=${patient.name}`;
   });
 
   return tr;

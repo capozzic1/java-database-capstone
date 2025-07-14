@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.Map;
 
 @RestController
@@ -51,15 +52,19 @@ public class PatientController {
 //    - If validation passes, attempts to create the patient and returns success or error messages based on the outcome.
     @PostMapping()
     public ResponseEntity<?> createPatient(@RequestBody Patient patient) {
+        Map<String, String> resp = new HashMap<>();
         if (!utilityService.validatePatient(patient)) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("patient already exists");
+            resp.put("message", "patient already exists");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(resp);
         } else {
             int result = patientService.createPatient(patient);
             if (result == 1) {
-                return ResponseEntity.ok("Sign up successful");
+                resp.put("message", "Sign up successful");
+                return ResponseEntity.ok(resp);
             } else {
+                resp.put("error", "An error occurred while saving the patient");
                 return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                        .body("An error occurred while saving the patient");
+                        .body(resp);
             }
         }
 

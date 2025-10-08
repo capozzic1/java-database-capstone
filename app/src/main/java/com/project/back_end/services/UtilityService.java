@@ -117,6 +117,8 @@ public class UtilityService {
         return docs;
     }
 
+
+
     // 6. **validateAppointment Method**
 // This method validates if the requested appointment time for a doctor is available.
 // - It first checks if the doctor exists in the repository.

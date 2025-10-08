@@ -131,3 +131,6 @@ dmypy.json
 # ignore real config
 app/src/main/resources/application.properties
 src/main/resources/application.yml
+
+.idea
+

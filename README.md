@@ -30,25 +30,31 @@ This version uses **Spring Boot**, **Spring MVC**, **Spring Security**, and **Sp
 
 ![img_5.png](img_5.png)
 
-🔐 Authentication & Authorization
+## 🔐 Authentication & Authorization
 
-Spring Security handles login, logout, and route protection.
+Spring Security handles **login**, **logout**, and **route protection**.
 
-👥 Role-based Permissions
-Role	Permissions
-Admin	Manage doctors, patients, and appointments
-Doctor	View assigned patients and appointments
-Patient	Book and view personal appointments
+### 👥 Role-based Permissions
 
-Supports JWT tokens or session-based login, depending on configuration.
+| Role | Permissions |
+|------|--------------|
+| **Admin** | Manage doctors, patients, and appointments |
+| **Doctor** | View assigned patients and appointments |
+| **Patient** | Book and view personal appointments |
 
-🧠 Key Features
+Supports **JWT tokens** or **session-based login**, depending on configuration.
 
-✅ Add, update, or delete doctors and patients
-✅ Schedule and view appointments
-✅ Secure login and registration for all roles
-✅ Server-rendered pages using Thymeleaf templates
-✅ Database integration via Spring Data JPA
+---
+
+## 🧠 Key Features
+
+- ✅ Add, update, or delete doctors and patients
+- ✅ Schedule and view appointments
+- ✅ Secure login and registration for all roles
+- ✅ Server-rendered pages using Thymeleaf templates
+- ✅ Database integration via Spring Data JPA
+- ✅ Environment-based configuration (local vs remote)
+
 
 🚀 Getting Started
 1️⃣ Clone and Build

@@ -5,7 +5,7 @@ Overview
 The Hospital Management System (HMS) is a Spring Boot–based web application built using the Spring MVC architecture.
 It provides an interface for Admins, Doctors, and Patients to manage hospital operations such as appointments, doctor schedules, and patient records — all within a single, server-rendered application.
 
-This version uses Spring Boot, Spring MVC, Spring Security, and Spring Data JPA, backed by a relational database (MySQL/PostgreSQL).
+This version uses Spring Boot, Spring MVC, Spring Security, and Spring Data JPA, backed by 2  databases (MySQL/MongoDB);
 
 ⚙️ Tech Stack
 Backend
@@ -15,6 +15,8 @@ Java 21
 Spring Boot 3
 
 Spring MVC for controllers and server-rendered views
+
+Vanilla javaScript for client-side interactivity
 
 Spring Data JPA + Hibernate for ORM and persistence
 
@@ -34,7 +36,6 @@ JPA entity mappings for Doctor, Patient, and Appointment
 
 Schema auto-generated on startup (via spring.jpa.hibernate.ddl-auto)
 
-🧩 Architecture
 hms/
 ├── src/main/java/com/hms/
 │    ├── controller/        # MVC controllers (DoctorController, PatientController, etc.)
@@ -52,6 +53,7 @@ hms/
 │
 ├── pom.xml
 └── README.md
+
 
 🔐 Authentication & Authorization
 

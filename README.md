@@ -56,14 +56,7 @@ Supports **JWT tokens** or **session-based login**, depending on configuration.
 - ✅ Environment-based configuration (local vs remote)
 
 
-🚀 Getting Started
-1️⃣ Clone and Build
-git clone https://github.com/yourusername/hospital-management-system.git
-cd hospital-management-system
-mvn clean install
-
-2️⃣ Run the Application
-mvn spring-boot:run -Dspring-boot.run.profiles=local
+![img_7.png](img_7.png)
 
 ![img_6.png](img_6.png)
 

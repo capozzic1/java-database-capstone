@@ -22,7 +22,7 @@ This version uses **Spring Boot**, **Spring MVC**, **Spring Security**, and **Sp
 - **Profiles** for local and remote (Docker/AWS) environments
 
 ### 🗄️ Database
-- **MySQL / PostgreSQL**
+- **MySQL / MongoDB**
 - JPA entity mappings for `Doctor`, `Patient`, and `Appointment`
 - Schema auto-generated on startup via
   ```properties

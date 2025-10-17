@@ -5,6 +5,7 @@ import com.project.back_end.DTO.Login;
 import com.project.back_end.models.Doctor;
 import com.project.back_end.services.DoctorService;
 import com.project.back_end.services.UtilityService;
+import com.project.back_end.services.TokenService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
@@ -33,6 +34,8 @@ public class DoctorController {
     private DoctorService doctorService;
     @Autowired
     private UtilityService utilityService;
+    @Autowired
+    private TokenService tokenService;
 
 // 3. Define the `getDoctorAvailability` Method:
 //    - Handles HTTP GET requests to check a specific doctor’s availability on a given date.
@@ -146,6 +149,28 @@ public class DoctorController {
     @GetMapping("/filter/{name}/{time}/{specialty}")
     public ResponseEntity<?> filterDoctor(@PathVariable String name, @PathVariable String time, @PathVariable String specialty) {
         return ResponseEntity.ok(utilityService.filterDoctor(name,specialty,time));
+    }
+
+    // Returns the authenticated doctor's profile as JSON for frontend use
+    @GetMapping("/profile")
+    public ResponseEntity<?> getDoctorProfile(
+        @RequestHeader(value = "Authorization", required = false) String authHeader
+    ) {
+        String token = authHeader;
+        Map<String, String> tokenMap = utilityService.getTokenValidationResponse(token);
+        if (!tokenMap.isEmpty()) {
+            String email = tokenMap.getOrDefault("email", null);
+            if (email == null && token != null) {
+                email = tokenService.extractEmail(token);
+            }
+            if (email != null) {
+                DoctorDTO dto = doctorService.findByEmail(email);
+                if (dto != null) {
+                    return ResponseEntity.ok(dto);
+                }
+            }
+        }
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid or missing token");
     }
 
 }

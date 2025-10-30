@@ -19,7 +19,10 @@ This version uses **Spring Boot**, **Spring MVC**, **Spring Security**, and **Sp
 - **Spring Security** with JWT or session-based authentication
 - **Thymeleaf (or JSP)** for rendering HTML templates
 - **Maven** for dependency management and build
-- **Profiles** for local and remote (Docker/AWS) environments
+- **Profiles** for local and remote (Docker) environments
+
+## ⚙️ Deployment
+ Deployed to AWS using ECS, EC2, ALB, RDS, and MongoDB Atlas. The application load balancer directs traffic to both this Spring app and an angular ssr app. 
 
 ### 🗄️ Database
 - **MySQL / MongoDB**
@@ -61,5 +64,4 @@ Supports **JWT tokens** or **session-based login**, depending on configuration.
 ![img_6.png](img_6.png)
 
 🌱 Future Enhancements
-
 Migrate from Spring MVC to an Angular frontend

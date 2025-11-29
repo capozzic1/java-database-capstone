@@ -4,7 +4,7 @@
 The **Hospital Management System (HMS)** is a **Spring Boot–based web application** built using the **Spring MVC architecture**.  
 It provides interfaces for **Admins**, **Doctors**, and **Patients** to manage hospital operations such as appointments, doctor schedules, and patient records — all within a single, server-rendered application.
 
-This version uses **Spring Boot**, **Spring MVC**, **Spring Security**, and **Spring Data JPA**, backed by **MySQL** or **MongoDB** databases.
+This version uses **Spring Boot**, **Spring MVC**, **Spring Security**, and **Spring Data JPA**, backed by **MySQL** and **MongoDB** databases.
 
 ---
 
@@ -16,7 +16,7 @@ This version uses **Spring Boot**, **Spring MVC**, **Spring Security**, and **Sp
 - **Spring MVC** for controllers and server-rendered views
 - **Vanilla JavaScript** for client-side interactivity
 - **Spring Data JPA + Hibernate** for ORM and persistence
-- **Spring Security** with JWT or session-based authentication
+- **Spring Security** with JWT
 - **Thymeleaf (or JSP)** for rendering HTML templates
 - **Maven** for dependency management and build
 - **Profiles** for local and remote (Docker) environments
@@ -65,3 +65,6 @@ Supports **JWT tokens** or **session-based login**, depending on configuration.
 
 🌱 Future Enhancements
 Migrate from Spring MVC to an Angular frontend
+
+To run locally:
+mvn spring-boot:run "-Dspring-boot.run.profiles=local"

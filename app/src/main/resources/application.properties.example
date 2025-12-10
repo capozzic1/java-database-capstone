@@ -17,7 +17,7 @@ management.health.db.enabled=true
 
 
 api.path=/
-jwt.secret=noneyabusiness
+jwt.secret=0123456789ABCDEF0123456789ABCDEF
 
 
 

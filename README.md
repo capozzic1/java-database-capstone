@@ -24,6 +24,8 @@ This version uses **Spring Boot**, **Spring MVC**, **Spring Security**, and **Sp
 ## ⚙️ Deployment
  Deployed to AWS using ECS, EC2, ALB, RDS, and MongoDB Atlas. The application load balancer directs traffic to both this Spring app and an angular ssr app. 
 
+Additional notes: Deployed to AWS Elastic Beanstalk for learning purposes
+
 ### 🗄️ Database
 - **MySQL / MongoDB**
 - JPA entity mappings for `Doctor`, `Patient`, and `Appointment`
